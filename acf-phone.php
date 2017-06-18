@@ -29,13 +29,12 @@ if ( ! class_exists( 'acf_plugin_phone' ) ) :
 
 			load_plugin_textdomain( 'acf-phone', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
 
-			add_action( 'acf/include_field_types', array( $this, 'include_field_types' ) ); // v5
-			add_action( 'acf/register_fields', array( $this, 'include_field_types' ) ); // v4
+			add_action( 'acf/include_field_types', array( $this, 'include_field_types' ) );
 		}
 
 		function include_field_types( $version = false ) {
 			if ( ! $version ) {
-				$version = 4;
+				$version = 5;
 			}
 			include_once( 'fields/acf-phone-v' . $version . '.php' );
 		}
