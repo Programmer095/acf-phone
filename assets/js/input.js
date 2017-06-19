@@ -9,7 +9,7 @@
       // Initialize intl-phone-input
       let initialCountry = telInput.attr('data-initial-country') || 'CA';
       telInput.intlTelInput({
-        utilsScript: settings.url + 'assets/js/utils.js',
+        utilsScript: acfPhoneSettings.url + 'assets/js/utils.js',
         initialCountry: initialCountry,
       });
 
@@ -24,7 +24,7 @@
             telInput.val(telInput.intlTelInput('getNumber', intlTelInputUtils.numberFormat.NATIONAL));
           }
           else {
-            errorMsg.text(settings.errors[telInput.intlTelInput('getValidationError')] || 'Invalid phone number');
+            errorMsg.text(acfPhoneSettings.errors[telInput.intlTelInput('getValidationError')] || 'Invalid phone number');
             errorMsg.removeClass('hide');
             telInput.addClass('error');
           }
