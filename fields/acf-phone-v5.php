@@ -18,13 +18,14 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 		 * @param $settings (array) The plugin settings
 		 */
 		function __construct( $settings ) {
-			$this->name     = 'phone';
-			$this->label    = __( 'Phone', 'acf-phone' );
-			$this->category = 'basic';
-			$this->defaults = array(
+			$this->name      = 'phone';
+			$this->label     = __( 'Phone', 'acf-phone' );
+			$this->category  = 'basic';
+			$this->defaults  = array(
 				'initial_country' => 'CA',
 			);
-			$this->settings = $settings;
+			$this->settings  = $settings;
+			$this->phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
 			parent::__construct();
 		}
 
@@ -49,10 +50,12 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 		 */
 		function render_field( $field ) {
 			?>
-            <input type="tel" name="<?= esc_attr( $field['name'] ) ?>"
-                   value="<?= esc_attr( $field['value'] ) ?>"
-                   data-initial-country="<?= esc_attr( $field['initial_country'] ) ?>"/>
-            <span class="error-msg hide"></span>
+            <div class="acf-input-wrap phone">
+                <input type="tel" name="<?= esc_attr( $field['name'] ) ?>"
+                       value="<?= esc_attr( $field['value'] ) ?>"
+                       data-initial-country="<?= esc_attr( $field['initial_country'] ) ?>"/>
+                <span class="error-msg hide"></span>
+            </div>
 			<?php
 		}
 
@@ -173,6 +176,18 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 		 * @return $valid
 		 */
 		function validate_value( $valid, $value, $field, $input ) {
+			if ( empty( $value ) ) {
+				return $valid;
+			}
+			try {
+				$phone_number = $this->phoneUtil->parse( $value, $field['initial_country'] );
+			} catch ( \libphonenumber\NumberParseException $e ) {
+				return $e->getMessage();
+			}
+			if ( ! $this->phoneUtil->isValidNumber( $phone_number ) ) {
+				$valid = __( "Phone number is invalid", 'acf-phone' );
+			}
+
 			return $valid;
 		}
 
@@ -207,7 +222,6 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 		function update_field( $field ) {
 			return $field;
 		}
-
 
 		/**
 		 *  This action is fired after a field is deleted from the database

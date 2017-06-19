@@ -989,3 +989,8 @@ input.error {
 .hide {
   display: none;
 }
+
+/* Visible country list */
+.acf-input-wrap.phone {
+  overflow: visible;
+}
