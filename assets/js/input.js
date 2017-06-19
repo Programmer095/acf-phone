@@ -1,35 +1,54 @@
 (function ($) {
 
   function initialize_field ($el) {
+    $el.find('input[type=tel]').each(function () {
+
+      let telInput = $(this),
+        errorMsg = $(this).next();
+
+      // Initialize intl-phone-input
+      let initialCountry = telInput.attr('data-initial-country') || 'CA';
+      telInput.intlTelInput({
+        utilsScript: settings.url + 'assets/js/utils.js',
+        initialCountry: initialCountry,
+      });
+
+      let reset = function () {
+        telInput.removeClass('error');
+        errorMsg.addClass('hide');
+      };
+
+      let validate = function () {
+        if (telInput.val()) {
+          if (telInput.intlTelInput('isValidNumber')) {
+            telInput.val(telInput.intlTelInput('getNumber', intlTelInputUtils.numberFormat.NATIONAL));
+          }
+          else {
+            errorMsg.text(settings.errors[telInput.intlTelInput('getValidationError')] || 'Invalid phone number');
+            errorMsg.removeClass('hide');
+            telInput.addClass('error');
+          }
+        }
+      };
+
+      // Validate and format phone number on blur
+      telInput.on('blur', function () {
+        reset();
+        validate();
+      });
+      telInput.on('keyup change', reset);
+    });
   }
 
   if (typeof acf.add_action !== 'undefined') {
-    /**
-     * ready append (ACF5)
-     *
-     *  These are 2 events which are fired during the page load
-     *  ready = on page load similar to $(document).ready()
-     *  append = on new DOM elements appended via repeater field
-     *
-     *  @param  $el (jQuery selection) the jQuery element which contains the ACF fields
-     *  @return  n/a
-     */
+    // ACF 5
     acf.add_action('ready append', function ($el) {
       acf.get_fields({type: 'phone'}, $el).each(function () {
         initialize_field($(this));
       });
     });
   } else {
-    /**
-     *  acf/setup_fields (ACF4)
-     *
-     *  This event is triggered when ACF adds any new elements to the DOM.
-     *
-     *  @param  event    e: an event object. This can be ignored
-     *  @param  Element    postbox: An element which contains the new HTML
-     *
-     *  @return  n/a
-     */
+    // ACF 4
     $(document).on('acf/setup_fields', function (e, postbox) {
       $(postbox).find('.field[data-field_type="phone"]').each(function () {
         initialize_field($(this));

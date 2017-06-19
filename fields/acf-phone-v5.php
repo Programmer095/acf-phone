@@ -22,10 +22,7 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 			$this->label    = __( 'Phone', 'acf-phone' );
 			$this->category = 'basic';
 			$this->defaults = array(
-				'font_size' => 14,
-			);
-			$this->l10n     = array(
-				'error' => __( 'Error! Please enter a higher value', 'acf-phone' ),
+				'initial_country' => 'CA',
 			);
 			$this->settings = $settings;
 			parent::__construct();
@@ -38,11 +35,10 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 		 */
 		function render_field_settings( $field ) {
 			acf_render_field_setting( $field, array(
-				'label'        => __( 'Font Size', 'acf-phone' ),
-				'instructions' => __( 'Customise the input font size', 'acf-phone' ),
-				'type'         => 'number',
-				'name'         => 'font_size',
-				'prepend'      => 'px',
+				'label'        => __( 'Initial Country', 'acf-phone' ),
+				'instructions' => __( 'Country code used for the initial phone number format.', 'acf-phone' ),
+				'type'         => 'text',
+				'name'         => 'initial_country',
 			) );
 		}
 
@@ -53,9 +49,10 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 		 */
 		function render_field( $field ) {
 			?>
-          <input type="text" name="<?php echo esc_attr( $field['name'] ) ?>"
-                 value="<?php echo esc_attr( $field['value'] ) ?>"
-                 style="font-size:<?php echo $field['font_size'] ?>px;"/>
+            <input type="tel" name="<?= esc_attr( $field['name'] ) ?>"
+                   value="<?= esc_attr( $field['value'] ) ?>"
+                   data-initial-country="<?= esc_attr( $field['initial_country'] ) ?>"/>
+            <span class="error-msg hide"></span>
 			<?php
 		}
 
@@ -66,8 +63,17 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 		function input_admin_enqueue_scripts() {
 			$url     = $this->settings['url'];
 			$version = $this->settings['version'];
-			wp_register_script( 'acf-input-phone', "{$url}assets/js/input.js", array( 'acf-input' ), $version );
+
+			wp_register_script( 'intl-phone-input', "{$url}assets/js/intlTelInput.min.js", array( 'jquery' ), $version );
+			wp_register_script( 'acf-input-phone', "{$url}assets/js/input.js", array(
+				'acf-input',
+				'intl-phone-input'
+			), $version );
+			wp_localize_script( 'acf-input-phone', 'settings', $this->settings );
 			wp_enqueue_script( 'acf-input-phone' );
+
+			wp_register_style( 'intl-phone-input', "{$url}assets/css/intlTelInput.css", array( 'acf-input' ), $version );
+			wp_enqueue_style( 'intl-phone-input' );
 		}
 
 		/**

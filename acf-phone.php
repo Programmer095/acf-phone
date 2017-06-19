@@ -24,7 +24,14 @@ if ( ! class_exists( 'acf_plugin_phone' ) ) :
 			$this->settings = array(
 				'version' => '0.1.0',
 				'url'     => plugin_dir_url( __FILE__ ),
-				'path'    => plugin_dir_path( __FILE__ )
+				'path'    => plugin_dir_path( __FILE__ ),
+				'errors'  => array(
+					0 => __( "Valid phone number", 'acf-phone' ),
+					1 => __( "Invalid country code", 'acf-phone' ),
+					2 => __( "Phone number is too short", 'acf-phone' ),
+					3 => __( "Phone number is too long", 'acf-phone' ),
+					4 => __( "Invalid phone number", 'acf-phone' )
+				),
 			);
 
 			load_plugin_textdomain( 'acf-phone', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
