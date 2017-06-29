@@ -1,42 +1,51 @@
 (function ($) {
 
   function initialize_field ($el) {
-    $el.find('input[type=tel]').each(function () {
+    $el.find('div.acf-input-wrap.phone').each(function () {
 
-      let telInput = $(this),
-        errorMsg = $(this).next();
+      let nationalInput = $(this).find('input[type=tel]'),
+        countryInput = $(this).find('input.country'),
+        e164Input = $(this).find('input.e164'),
+        errorMsg = $(this).find('span.error-msg');
 
       // Initialize intl-phone-input
-      let initialCountry = telInput.attr('data-initial-country') || 'CA';
-      telInput.intlTelInput({
+      let initialCountry = countryInput.val() || nationalInput.attr('data-initial-country') || 'CA';
+      nationalInput.intlTelInput({
         utilsScript: acfPhoneSettings.url + 'assets/js/utils.js',
         initialCountry: initialCountry,
       });
 
+      // Reset validation status and hidden field values
       let reset = function () {
-        telInput.removeClass('error');
+        nationalInput.removeClass('error');
+        countryInput.val('');
+        e164Input.val('');
         errorMsg.addClass('hide');
       };
 
+      // Validate phone number
       let validate = function () {
-        if (telInput.val()) {
-          if (telInput.intlTelInput('isValidNumber')) {
-            telInput.val(telInput.intlTelInput('getNumber', intlTelInputUtils.numberFormat.NATIONAL));
+        if (nationalInput.val()) {
+          if (nationalInput.intlTelInput('isValidNumber')) {
+            // Update formatted field (national) and hidden fields (country / e164)
+            nationalInput.val(nationalInput.intlTelInput('getNumber', intlTelInputUtils.numberFormat.NATIONAL));
+            countryInput.val(nationalInput.intlTelInput('getSelectedCountryData').iso2.toUpperCase());
+            e164Input.val(nationalInput.intlTelInput('getNumber', intlTelInputUtils.numberFormat.E164));
           }
           else {
-            errorMsg.text(acfPhoneSettings.errors[telInput.intlTelInput('getValidationError')] || 'Invalid phone number');
+            errorMsg.text(acfPhoneSettings.errors[nationalInput.intlTelInput('getValidationError')] || 'Invalid phone number');
             errorMsg.removeClass('hide');
-            telInput.addClass('error');
+            nationalInput.addClass('error');
           }
         }
       };
 
       // Validate and format phone number on blur
-      telInput.on('blur', function () {
+      nationalInput.on('blur', function () {
         reset();
         validate();
       });
-      telInput.on('keyup change', reset);
+      nationalInput.on('keyup change', reset);
     });
   }
 

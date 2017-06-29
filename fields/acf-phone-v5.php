@@ -53,9 +53,12 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 		function render_field( $field ) {
 			?>
             <div class="acf-input-wrap phone">
-                <input type="tel" name="<?= esc_attr( $field['name'] ) ?>"
-                       value="<?= esc_attr( $field['value'] ) ?>"
+                <input type="tel" name="<?= $field['name'] ?>[national]" value="<?= $field['value']['national'] ?>"
                        data-initial-country="<?= esc_attr( $field['initial_country'] ) ?>"/>
+                <input type="hidden" name="<?= $field['name'] ?>[country]" value="<?= $field['value']['country'] ?>"
+                       class="country">
+                <input type="hidden" name="<?= $field['name'] ?>[e164]" value="<?= $field['value']['e164'] ?>"
+                       class="e164">
                 <span class="error-msg hide"></span>
             </div>
 			<?php
@@ -132,6 +135,7 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 		 * @return $value
 		 */
 		function load_value( $value, $post_id, $field ) {
+			// TODO: Update schema if value was saved as a string
 			return $value;
 		}
 
@@ -149,7 +153,7 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 		}
 
 		/**
-		 * This filter is appied to the $value after it is loaded from the db and before it is returned to the template
+		 * This filter is applied to the $value after it is loaded from the db and before it is returned to the template
 		 *
 		 * @param  $value (mixed) the value which was loaded from the database
 		 * @param  $post_id (mixed) the $post_id from which the value was loaded
@@ -181,12 +185,9 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 			if ( empty( $value ) ) {
 				return $valid;
 			}
-			try {
-				$phone_number = $this->phoneUtil->parse( $value, $field['initial_country'] );
-			} catch ( \libphonenumber\NumberParseException $e ) {
-				return $e->getMessage();
-			}
-			if ( ! $this->phoneUtil->isValidNumber( $phone_number ) ) {
+			if ( empty( $value['national'] ) ) {
+				return $valid;
+			} else if ( empty( $value['country'] ) || empty( $value['e164'] ) ) {
 				$valid = __( "Phone number is invalid", 'acf-phone' );
 			}
 
