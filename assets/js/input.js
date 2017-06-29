@@ -13,6 +13,7 @@
       nationalInput.intlTelInput({
         utilsScript: acfPhoneSettings.url + 'assets/js/utils.js',
         initialCountry: initialCountry,
+        preferredCountries: ['CA', 'US'],
       });
 
       // Reset validation status and hidden field values
