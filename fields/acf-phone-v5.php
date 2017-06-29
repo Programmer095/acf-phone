@@ -39,7 +39,7 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 			// Initial Country
 			acf_render_field_setting( $field, array(
 				'label'        => __( 'Initial Country', 'acf-phone' ),
-				'instructions' => __( 'Country code used for the initial phone number format.', 'acf-phone' ),
+				'instructions' => __( 'Country used for the initial phone number format.', 'acf-phone' ),
 				'type'         => 'select',
 				'choices'      => $countries,
 				'name'         => 'initial_country',
