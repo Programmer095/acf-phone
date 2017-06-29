@@ -25,7 +25,6 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 				'initial_country' => 'CA',
 			);
 			$this->settings  = $settings;
-			$this->phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
 			parent::__construct();
 		}
 

@@ -14,7 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/inc/countries.php';
 
 if ( ! class_exists( 'acf_plugin_phone' ) ) :
