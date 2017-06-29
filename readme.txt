@@ -23,5 +23,10 @@ This ACF field type is compatible with:
 
 == Changelog ==
 
+= 0.2.0 =
+* National / E.164 / Click to Call / Array formatting options
+* Refactor separate national / country / E.164 field values
+* Remove libphonenumber-for-php dependency
+
 = 0.1.0 =
 * Initial Release.
