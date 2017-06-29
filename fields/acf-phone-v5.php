@@ -35,10 +35,12 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 		 * @param $field (array) the $field being edited
 		 */
 		function render_field_settings( $field ) {
+			global $countries;
 			acf_render_field_setting( $field, array(
 				'label'        => __( 'Initial Country', 'acf-phone' ),
 				'instructions' => __( 'Country code used for the initial phone number format.', 'acf-phone' ),
-				'type'         => 'text',
+				'type'         => 'select',
+				'choices'      => $countries,
 				'name'         => 'initial_country',
 			) );
 		}
