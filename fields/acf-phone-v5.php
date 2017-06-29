@@ -18,13 +18,14 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 		 * @param $settings (array) The plugin settings
 		 */
 		function __construct( $settings ) {
-			$this->name      = 'phone';
-			$this->label     = __( 'Phone', 'acf-phone' );
-			$this->category  = 'basic';
-			$this->defaults  = array(
+			$this->name     = 'phone';
+			$this->label    = __( 'Phone', 'acf-phone' );
+			$this->category = 'basic';
+			$this->defaults = array(
 				'initial_country' => 'CA',
+				'return_format'   => 'national',
 			);
-			$this->settings  = $settings;
+			$this->settings = $settings;
 			parent::__construct();
 		}
 
@@ -35,12 +36,26 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 		 */
 		function render_field_settings( $field ) {
 			global $countries;
+			// Initial Country
 			acf_render_field_setting( $field, array(
 				'label'        => __( 'Initial Country', 'acf-phone' ),
 				'instructions' => __( 'Country code used for the initial phone number format.', 'acf-phone' ),
 				'type'         => 'select',
 				'choices'      => $countries,
 				'name'         => 'initial_country',
+			) );
+			// Return Format
+			acf_render_field_setting( $field, array(
+				'label'        => __( 'Return Format', 'acf-phone' ),
+				'instructions' => __( 'Specify the value returned in the template.', 'acf-phone' ),
+				'type'         => 'select',
+				'choices'      => array(
+					'national'    => __( "National format", 'acf-phone' ),
+					'e164'        => __( "International format (E.164)", 'acf-phone' ),
+					'clicktocall' => __( "Click to Call", 'acf-phone' ),
+					'array'       => __( "Values (array)", 'acf-phone' ),
+				),
+				'name'         => 'return_format',
 			) );
 		}
 
@@ -163,6 +178,16 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 		function format_value( $value, $post_id, $field ) {
 			if ( empty( $value ) ) {
 				return $value;
+			}
+			switch ( $field['return_format'] ) {
+				case 'national':
+					return '<span itemprop="telephone">' . $value['national'] . '</span>';
+
+				case 'e164':
+					return '<span itemprop="telephone">' . $value['e164'] . '</span>';
+
+				case 'clicktocall':
+					return '<a href="tel:' . $value['e164'] . '"><span itemprop="telephone">' . $value['national'] . '</span></a>';
 			}
 
 			return $value;
