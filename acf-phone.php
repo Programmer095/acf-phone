@@ -3,7 +3,7 @@
 Plugin Name: Advanced Custom Fields: Phone
 Plugin URI: https://gitlab.ledevsimple.ca/wordpress/acf-phone
 Description: Phone number field for ACF.
-Version: 0.2.0
+Version: 0.2.1
 Author: Pascal Martineau <pascal@lewebsimple.ca>
 Author URI: https://lewebsimple.ca
 License: GPLv2 or later

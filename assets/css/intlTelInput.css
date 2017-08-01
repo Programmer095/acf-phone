@@ -994,3 +994,9 @@ input.error {
 .acf-input-wrap.phone {
   overflow: visible;
 }
+
+/* Inline extension field */
+.acf-input-wrap input.extension {
+  display: inline-block;
+  width: 100px;
+}

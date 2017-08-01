@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Advanced Custom Fields: Phone\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-18 14:06+0000\n"
-"PO-Revision-Date: 2017-06-18 14:07+0000\n"
+"POT-Creation-Date: 2017-08-01 14:17+0000\n"
+"PO-Revision-Date: 2017-08-01 14:21+0000\n"
 "Last-Translator: lewebsimple <tech@lewebsimple.ca>\n"
 "Language-Team: French (Canada)\n"
 "Language: fr-CA\n"
@@ -13,38 +13,98 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco - https://localise.biz/"
 
+#: acf-phone.php:29
+msgid "Valid phone number"
+msgstr "Le numéro de téléphone est valide"
+
+#: acf-phone.php:30
+msgid "Invalid country code"
+msgstr "Le code de pays est invalide"
+
+#: acf-phone.php:31
+msgid "Phone number is too short"
+msgstr "Le numéro de téléphone est trop court"
+
+#: acf-phone.php:32
+msgid "Phone number is too long"
+msgstr "Le numéro de téléphone est trop long"
+
+#: acf-phone.php:33
+msgid "Invalid phone number"
+msgstr "Le numéro de téléphone est invalide"
+
+#: fields/acf-phone-v5.php:42 fields/acf-phone-v5.php:82
+msgid "Extension"
+msgstr "Poste"
+
+#: fields/acf-phone-v5.php:43
+msgid "Add extension number field"
+msgstr "Ajouter un champ numérique pour le poste"
+
+#: fields/acf-phone-v5.php:50
+msgid "Initial Country"
+msgstr "Pays initial"
+
+#: fields/acf-phone-v5.php:51
+msgid "Country used for the initial phone number format."
+msgstr "Pays utilisé pour initialiser le format du numéro de téléphone"
+
+#: fields/acf-phone-v5.php:58
+msgid "Return Format"
+msgstr "Format d'affichage"
+
+#: fields/acf-phone-v5.php:59
+msgid "Specify the value returned in the template."
+msgstr "Détermine le format retourné dans le modèle."
+
+#: fields/acf-phone-v5.php:62
+msgid "National format"
+msgstr "Format national"
+
+#: fields/acf-phone-v5.php:63
+msgid "International format (E.164)"
+msgstr "Format international (E.164)"
+
+#: fields/acf-phone-v5.php:64
+msgid "Click to Call"
+msgstr "Cliquer pour appeler"
+
+#: fields/acf-phone-v5.php:65
+msgid "Values (array)"
+msgstr "Valeurs (array)"
+
+#: fields/acf-phone-v5.php:215
+msgid "extension"
+msgstr "poste"
+
+#: fields/acf-phone-v5.php:240
+msgid "Phone number is invalid"
+msgstr "Le numéro de téléphone est invalide"
+
+#: fields/acf-phone-v5.php:243
+msgid "Extension is invalid"
+msgstr "Le poste est invalide"
+
+#. Name of the plugin
+msgid "Advanced Custom Fields: Phone"
+msgstr "Advanced Custom Fields: Téléphone"
+
+#. URI of the plugin
+msgid "https://gitlab.ledevsimple.ca/wordpress/acf-phone"
+msgstr "https://gitlab.ledevsimple.ca/wordpress/acf-phone"
+
+#. Author of the plugin
+msgid "Pascal Martineau <pascal@lewebsimple.ca>"
+msgstr "Pascal Martineau <pascal@lewebsimple.ca>"
+
+#. Author URI of the plugin
+msgid "https://lewebsimple.ca"
+msgstr "https://lewebsimple.ca"
+
 #: fields/acf-phone-v5.php:22
 msgid "Phone"
 msgstr "Téléphone"
 
-#: fields/acf-phone-v5.php:28
-msgid "Error! Please enter a higher value"
-msgstr ""
-
-#: fields/acf-phone-v5.php:41
-msgid "Font Size"
-msgstr ""
-
-#: fields/acf-phone-v5.php:42
-msgid "Customise the input font size"
-msgstr ""
-
-#. Name of the plugin
-msgid "Advanced Custom Fields: Phone"
-msgstr ""
-
 #. Description of the plugin
 msgid "Phone number field for ACF."
 msgstr "Champ ACF pour un numéro de téléphone"
-
-#. URI of the plugin
-msgid "https://gitlab.ledevsimple.ca/wordpress/acf-phone"
-msgstr ""
-
-#. Author of the plugin
-msgid "Pascal Martineau <pascal@lewebsimple.ca>"
-msgstr ""
-
-#. Author URI of the plugin
-msgid "https://lewebsimple.ca"
-msgstr ""

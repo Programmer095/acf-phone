@@ -22,6 +22,7 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 			$this->label    = __( 'Phone', 'acf-phone' );
 			$this->category = 'basic';
 			$this->defaults = array(
+				'extension'       => false,
 				'initial_country' => 'CA',
 				'return_format'   => 'national',
 			);
@@ -36,6 +37,14 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 		 */
 		function render_field_settings( $field ) {
 			global $countries;
+			// Extension
+			acf_render_field_setting( $field, array(
+				'label'        => __( "Extension", 'acf-phone' ),
+				'instructions' => __( "Add extension number field", 'acf-phone' ),
+				'type'         => 'true_false',
+				'ui'           => 1,
+				'name'         => 'extension',
+			) );
 			// Initial Country
 			acf_render_field_setting( $field, array(
 				'label'        => __( 'Initial Country', 'acf-phone' ),
@@ -69,6 +78,11 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
             <div class="acf-input-wrap phone">
                 <input type="tel" name="<?= $field['name'] ?>[national]" value="<?= $field['value']['national'] ?>"
                        data-initial-country="<?= esc_attr( $field['initial_country'] ) ?>"/>
+				<?php if ( $field['extension'] ): ?>
+                    <span><?= __( "Extension", 'acf-phone' ) ?></span>
+                    <input class="extension" type="text" name="<?= $field['name'] ?>[extension]"
+                           value="<?= $field['value']['extension'] ?>">
+				<?php endif; ?>
                 <input type="hidden" name="<?= $field['name'] ?>[country]" value="<?= $field['value']['country'] ?>"
                        class="country">
                 <input type="hidden" name="<?= $field['name'] ?>[e164]" value="<?= $field['value']['e164'] ?>"
@@ -179,18 +193,29 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 			if ( empty( $value ) ) {
 				return $value;
 			}
+			$output = $value;
 			switch ( $field['return_format'] ) {
 				case 'national':
-					return '<span itemprop="telephone">' . $value['national'] . '</span>';
+					$output = '<span itemprop="telephone">' . $value['national'] . '</span>';
+					break;
 
 				case 'e164':
-					return '<span itemprop="telephone">' . $value['e164'] . '</span>';
+					$output = '<span itemprop="telephone">' . $value['e164'] . '</span>';
+					break;
 
 				case 'clicktocall':
-					return '<a href="tel:' . $value['e164'] . '"><span itemprop="telephone">' . $value['national'] . '</span></a>';
+					$output = '<a href="tel:' . $value['e164'] . '"><span itemprop="telephone">' . $value['national'] . '</span></a>';
+					break;
+
+				case 'array':
+					return $value;
 			}
 
-			return $value;
+			if ( $field['extension'] && ! empty( $value['extension'] ) ) {
+				$output .= ' ' . __( "extension", 'acf-phone' ) . ' <span>' . $value['extension'] . '</span>';
+			}
+
+			return $output;
 		}
 
 		/**
@@ -213,6 +238,9 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 				return $valid;
 			} else if ( empty( $value['country'] ) || empty( $value['e164'] ) ) {
 				$valid = __( "Phone number is invalid", 'acf-phone' );
+			}
+			if ( $field['extension'] && ! empty( $value['extension'] ) && ! ctype_digit( $value['extension'] ) ) {
+				$valid = __( "Extension is invalid", 'acf-phone' );
 			}
 
 			return $valid;

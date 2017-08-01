@@ -23,6 +23,9 @@ This ACF field type is compatible with:
 
 == Changelog ==
 
+= 0.2.1 =
+* Add optional extension field
+
 = 0.2.0 =
 * National / E.164 / Click to Call / Array formatting options
 * Refactor separate national / country / E.164 field values
