@@ -196,15 +196,15 @@ if ( ! class_exists( 'acf_field_phone' ) ) :
 			$output = $value;
 			switch ( $field['return_format'] ) {
 				case 'national':
-					$output = '<span itemprop="telephone">' . $value['national'] . '</span>';
+					$output = $value['national'] ? '<span itemprop="telephone">' . $value['national'] . '</span>' : '';
 					break;
 
 				case 'e164':
-					$output = '<span itemprop="telephone">' . $value['e164'] . '</span>';
+					$output = $value['e164'] ? '<span itemprop="telephone">' . $value['e164'] . '</span>' : '';
 					break;
 
 				case 'clicktocall':
-					$output = '<a href="tel:' . $value['e164'] . '"><span itemprop="telephone">' . $value['national'] . '</span></a>';
+					$output = $value['national'] ? '<a href="tel:' . $value['e164'] . '"><span itemprop="telephone">' . $value['national'] . '</span></a>' : '';
 					break;
 
 				case 'array':
